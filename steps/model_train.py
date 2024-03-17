@@ -5,8 +5,8 @@ import mlflow
 from zenml import step
 from zenml.client import Client
 from model.model_dev import (
-    # LightGBMModel,
-    # LinearRegressionModel,
+    LightGBMModel,
+    LinearRegressionModel,
     RandomForestModel,
 )
 from sklearn.base import RegressorMixin
@@ -16,7 +16,7 @@ from .config import ModelNameConfig
 # initiate the experiment tracker object
 # experiment_tracker = Client().active_stack.experiment_tracker
 
-@step
+@step(enable_cache=False)
 def train_model(
     x_train: pd.DataFrame,
     x_test: pd.DataFrame,

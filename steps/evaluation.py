@@ -16,7 +16,7 @@ from typing import Tuple
 # initiate the experiment tracker object
 # experiment_tracker = Client().active_stack.experiment_tracker
 
-@step
+@step(enable_cache=False)
 def evaluation(
     model: RegressorMixin, x_test: pd.DataFrame, y_test: pd.Series
 ) -> Tuple[

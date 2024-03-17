@@ -12,7 +12,7 @@ from typing_extensions import Annotated
 from zenml import step
 
 # step for cleaning the data:
-@step
+@step(enable_cache=False)
 def clean_data(data: pd.DataFrame) -> Tuple[
     Annotated[pd.DataFrame, "x_train"],
     Annotated[pd.DataFrame, "x_test"],
