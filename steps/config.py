@@ -5,7 +5,7 @@ class ModelNameConfig(BaseParameters):
     """Model Configurations"""
 
     # which model we want to use!    
-    model_name: str = "linear_regression" 
+    model_name: str = "xgbm" 
     fine_tuning: bool = False
 
     

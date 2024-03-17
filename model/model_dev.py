@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import optuna
 import pandas as pd
 from lightgbm import LGBMRegressor
+import xgboost as xgb
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 
@@ -38,6 +39,9 @@ class LinearRegressionModel(Model):
         except Exception as err:
             logging.error("Error in training model: {}", format(err))
             raise err
+    def optimize(self, trial, x_train, y_train, x_test, y_test):
+        reg = self.train(x_train, y_train)
+        return reg.score(x_test, y_test)
 
 # Implementing LightGBM Model: 
 class LightGBMModel(Model):
@@ -50,6 +54,14 @@ class LightGBMModel(Model):
         reg.fit(x_train, y_train)
         logging.info("LR Model Training Complete!")
         return reg
+    
+    def optimize(self, trial, x_train, y_train, x_test, y_test):
+        n_estimators = trial.suggest_int("n_estimators", 1, 200)
+        max_depth = trial.suggest_int("max_depth", 1, 20)
+        learning_rate = trial.suggest_uniform("learning_rate", 0.01, 0.99)
+        reg = self.train(x_train, y_train, n_estimators=n_estimators, learning_rate=learning_rate, max_depth=max_depth)
+        return reg.score(x_test, y_test)
+
     
 # Implementing XGBoost Model:
 class XGBoostModel(Model):
@@ -81,6 +93,14 @@ class RandomForestModel(Model):
         reg.fit(x_train, y_train)
         logging.info("LR Model Training Complete!")
         return reg
+    
+    def optimize(self, trial, x_train, y_train, x_test, y_test):
+        n_estimators = trial.suggest_int("n_estimators", 1, 200)
+        max_depth = trial.suggest_int("max_depth", 1, 20)
+        min_samples_split = trial.suggest_int("min_samples_split", 2, 20)
+        reg = self.train(x_train, y_train, n_estimators=n_estimators, max_depth=max_depth, min_samples_split=min_samples_split)
+        return reg.score(x_test, y_test)
+
     
 
 # Implementing Hyper parameter tuning:
