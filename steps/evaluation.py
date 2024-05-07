@@ -14,9 +14,9 @@ from typing_extensions import Annotated
 from typing import Tuple
 
 # initiate the experiment tracker object
-# experiment_tracker = Client().active_stack.experiment_tracker
+experiment_tracker = Client().active_stack.experiment_tracker
 
-@step(enable_cache=False)
+@step(enable_cache=False, experiment_tracker=experiment_tracker.name)
 def evaluation(
     model: RegressorMixin, x_test: pd.DataFrame, y_test: pd.Series
 ) -> Tuple[
