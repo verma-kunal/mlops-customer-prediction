@@ -72,6 +72,10 @@ def main():
             }
         )
         json_list = json.loads(json.dumps(list(df.T.to_dict().values())))
+        newVal = pd.read_excel('./data/new_values.xlsx')
+        print(df.head())
+        appended_data = pd.concat([newVal, df], ignore_index=True)
+        appended_data.to_excel('./data/new_values.xlsx', index=False)
         data = np.array(json_list)
         pred = service.predict(data)
         st.success(
